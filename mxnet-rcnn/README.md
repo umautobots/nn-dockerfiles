@@ -15,6 +15,8 @@ machines), an added benefit is being able to use docker volumes to dynamically s
 
 ## Quick start
 
+You need [CUDA 8](https://developer.nvidia.com/cuda-toolkit) and [NVIDIA Docker](https://github.com/NVIDIA/nvidia-docker).
+
 Build the container
 
 ```
