@@ -55,7 +55,7 @@ the results to a directory of our choosing.
 
 
 ```
-$ mkdir training-runs/mxnet-rcnn-voc/evaluate-on-voc
+$ mkdir -p training-runs/mxnet-rcnn-voc/evaluate-on-voc/cache
 $ nvidia-docker run --rm --name run-mxnet-rcnn-end2end \
   `#container volume mapping` \
   -v `pwd`/training-runs/mxnet-rcnn-voc:/media/ngv/output \
