@@ -21,7 +21,7 @@ Assuming that:
 - The ground truth labels reside at `/media/datasets/KITTI/training/label_2`
 - The labels produced when evaluating our own network are at `my-kitti-labels`
 
-These directories contain KITTI-style label files for each image in the test set:
+and that directories contain KITTI-style label files for each image in the test set:
 
 ```
 $ ls my-kitti-labels | head -3
@@ -76,7 +76,7 @@ kitti-eval/my-kitti-labels/evaluate50/data
 kitti-eval/my-kitti-labels/evaluate50/stats_car_mAP.txt
 ```
 
-Evaluation with 50% overlap can be similarly run as follows:
+Evaluation with 70% overlap can be similarly run as follows:
 
 ```
 $ mkdir -p kitti-eval/my-kitti-labels/evaluate70
