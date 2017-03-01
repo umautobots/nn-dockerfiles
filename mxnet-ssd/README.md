@@ -41,7 +41,6 @@ $ nvidia-docker run --rm --name run-mxnet-ssd-train-2017-02-28T15-52-00 \
   -v `pwd`/ssd-demo/training-runs/mxnet-ssd-voc/cache:/root/mxnet/example/ssd/dataset/cache \
   -v /mnt/ngv/pretrained-networks/mxnet/ssd:/media/ngv/pretrained:ro \
   -v `pwd`/ssd-demo/data/VOCdevkit:/root/mxnet/example/ssd/data/VOCdevkit:ro \
-  -v /home/krosaen/dev/umautobots-mxnet/example/ssd/dataset/pascal_voc.py:/root/mxnet/example/ssd/dataset/pascal_voc.py:ro \
   -it mxnet-ssd \
   python train.py \
   --image-set trainval \
