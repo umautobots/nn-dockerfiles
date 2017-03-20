@@ -18,8 +18,8 @@ RUN apt-get update && apt-get install -y \
 
 # Clone MXNet repo and move into it
 RUN cd /root && git clone --recursive https://github.com/dmlc/mxnet && cd mxnet && \
-# use a fixed stable release (includes key fixes to rcnn on 1/19/2017 https://github.com/dmlc/mxnet/pull/4730)
-  git checkout v0.9.3 && \
+# use a known working commit that includes latest fixes we contributed to rcnn example code https://github.com/dmlc/mxnet/pull/4840
+  git checkout 5568641d99c7d7dac2aaab53d35f0a70c15b3a7f && \
 # Copy config.mk
   cp make/config.mk config.mk && \
 # Set OpenBLAS
