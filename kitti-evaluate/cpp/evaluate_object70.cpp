@@ -6,6 +6,7 @@
 #include <numeric>
 #include <strings.h>
 #include <assert.h>
+#include <fstream>
 
 #include "mail.h"
 
@@ -14,9 +15,6 @@ using namespace std;
 /*=======================================================================
 STATIC EVALUATION PARAMETERS
 =======================================================================*/
-
-// holds the number of test images on the server
-const int32_t N_TESTIMAGES = 7481;
 
 // easy, moderate and hard evaluation level
 enum DIFFICULTY{EASY=0, MODERATE=1, HARD=2};
@@ -105,7 +103,7 @@ vector<tDetection> loadDetections(string file_name, bool &compute_aos, bool &eva
   vector<tDetection> detections;
   FILE *fp = fopen(file_name.c_str(),"r");
   if (!fp) {
-    success = false;
+    success = true;
     return detections;
   }
   while (!feof(fp)) {
@@ -497,8 +495,10 @@ bool eval_class (FILE *fp_det, FILE *fp_ori, CLASSES current_class,const vector<
   vector< vector<int32_t> > ignored_gt, ignored_det;  // index of ignored gt detection for current class/difficulty
   vector< vector<tGroundtruth> > dontcare;            // index of dontcare areas, included in ground truth
 
+  int32_t n_gt_images = groundtruth.size();
+
   // for all test images do
-  for (int32_t i=0; i<N_TESTIMAGES; i++){
+  for (int32_t i=0; i<n_gt_images; i++){
 
     // holds ignored ground truth, ignored detections and dontcare areas for current frame
     vector<int32_t> i_gt, i_det;
@@ -525,7 +525,7 @@ bool eval_class (FILE *fp_det, FILE *fp_ori, CLASSES current_class,const vector<
   // compute TP,FP,FN for relevant scores
   vector<tPrData> pr;
   pr.assign(thresholds.size(),tPrData());
-  for (int32_t i=0; i<N_TESTIMAGES; i++){
+  for (int32_t i=0; i<n_gt_images; i++){
 
     // for all scores/recall thresholds do:
     for(int32_t t=0; t<thresholds.size(); t++){
@@ -653,7 +653,8 @@ bool eval(string result_sha,Mail* mail){
   initGlobals();
 
   // ground truth and result directories
-  string gt_dir         = "data/object/label_2";
+  string ids_f          = "data/ground_truth/train.txt";
+  string gt_dir         = "data/ground_truth/training/label_2";
   string result_dir     = "results/" + result_sha;
   string plot_dir       = result_dir + "/plot";
 
@@ -670,11 +671,14 @@ bool eval(string result_sha,Mail* mail){
 
   // for all images read groundtruth and detections
   mail->msg("Loading detections...");
-  for (int32_t i=0; i<N_TESTIMAGES; i++) {
+
+  std::ifstream ids_file(ids_f.c_str());
+  string image_id;
+  while (ids_file >> image_id) {
 
     // file name
     char file_name[256];
-    sprintf(file_name,"%06d.txt",i);
+    sprintf(file_name,"%s.txt",image_id.c_str());
 
     // read ground truth and result poses
     bool gt_success,det_success;
